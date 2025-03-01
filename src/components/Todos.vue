@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import AddTodoModal from "./AddTodoModal.vue";
 
 // TodoのList(Refで監視済)
 const todos = ref([
@@ -82,12 +83,22 @@ const add = () => {
   isAdd.value = false;
   addTargetValue.value = "";
 };
+
+// 子から受け取ったデータを表示する
+const catchValue = (data: string) => {
+  todos.value.push({
+    id: todos.value.length + 1,
+    content: data,
+  });
+};
 </script>
 
 <template>
   <main class="main">
     <h1 class="title">Todos</h1>
     <button @click="addTodo" class="button blue addButton">新規追加</button>
+
+    <AddTodoModal v-model:isAdd="isAdd" @text-send-event="catchValue" />
 
     <div v-if="editId" class="overlay" @click.self="cancel">
       <div class="modal">
@@ -104,7 +115,7 @@ const add = () => {
       </div>
     </div>
 
-    <div v-if="isAdd" class="overlay" @click.self="cancelAdd">
+    <!-- <div v-if="isAdd" class="overlay" @click.self="cancelAdd">
       <div class="modal">
         <h2>追加画面</h2>
         <div>
@@ -117,7 +128,7 @@ const add = () => {
           <button @click="cancelAdd" class="button gray">キャンセル</button>
         </div>
       </div>
-    </div>
+    </div> -->
 
     <table class="table" border="1">
       <tbody>
