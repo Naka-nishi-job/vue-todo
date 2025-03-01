@@ -85,62 +85,124 @@ const add = () => {
 </script>
 
 <template>
-  <h1>Todos</h1>
+  <main class="main">
+    <h1 class="title">Todos</h1>
+    <button @click="addTodo" class="button blue addButton">新規追加</button>
 
-  <div v-if="editId" class="overlay" @click.self="cancel">
-    <div class="modal">
-      <h2>編集画面</h2>
-      <div>
-        <p>Content:</p>
-        <input type="text" v-model="editTargetValue" />
-      </div>
+    <div v-if="editId" class="overlay" @click.self="cancel">
+      <div class="modal">
+        <h2>編集画面</h2>
+        <div>
+          <p>Content:</p>
+          <input type="text" v-model="editTargetValue" />
+        </div>
 
-      <div class="modal-buttons">
-        <button @click="save">保存</button>
-        <button @click="cancel">キャンセル</button>
-      </div>
-    </div>
-  </div>
-
-  <div v-if="isAdd" class="overlay" @click.self="cancelAdd">
-    <div class="modal">
-      <h2>追加画面</h2>
-      <div>
-        <p>Content:</p>
-        <input type="text" v-model="addTargetValue" />
-      </div>
-
-      <div class="modal-buttons">
-        <button @click="add">追加</button>
-        <button @click="cancelAdd">キャンセル</button>
+        <div class="modal-buttons">
+          <button @click="save" class="button blue">保存</button>
+          <button @click="cancel" class="button gray">キャンセル</button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div>
-    <button @click="addTodo">新規追加</button>
-  </div>
+    <div v-if="isAdd" class="overlay" @click.self="cancelAdd">
+      <div class="modal">
+        <h2>追加画面</h2>
+        <div>
+          <p>Content:</p>
+          <input type="text" v-model="addTargetValue" />
+        </div>
 
-  <table>
-    <tbody>
-      <tr v-for="todo in todos" :key="todo.id">
-        <td>{{ todo.content }}</td>
-        <td><button @click="editTodo(todo.id)">編集</button></td>
-        <td><button @click="deleteTodo(todo.id)">削除</button></td>
-      </tr>
-    </tbody>
-  </table>
+        <div class="modal-buttons">
+          <button @click="add" class="button blue">追加</button>
+          <button @click="cancelAdd" class="button gray">キャンセル</button>
+        </div>
+      </div>
+    </div>
+
+    <table class="table" border="1">
+      <tbody>
+        <tr v-for="todo in todos" :key="todo.id">
+          <td>{{ todo.content }}</td>
+          <td>
+            <button @click="editTodo(todo.id)" class="button blue">編集</button>
+          </td>
+          <td>
+            <button @click="deleteTodo(todo.id)" class="button red">
+              削除
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </main>
 </template>
 
-<style>
-.overlay {
-  background-color: pink;
+<style scoped>
+.main {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+}
+
+.title {
+  margin-top: 2rem;
+  font-size: 1.6rem;
+}
+
+.button {
+  padding: 0.3rem 1.6rem;
+  border-radius: 6px;
+  transition: 0.4s ease;
+  cursor: pointer;
+}
+
+.blue {
+  border: 1px solid var(--color-blue);
+  background-color: var(--color-white);
+  color: var(--color-blue);
+}
+
+.blue:hover {
+  background-color: var(--color-blue);
+  color: var(--color-white);
+}
+
+.red {
+  border: 1px solid var(--color-red);
+  background-color: var(--color-white);
+  color: var(--color-red);
+}
+
+.gray {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-gray);
+  color: var(--color-gray);
+}
+
+.addButton {
   position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.table {
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.table tbody tr > td {
+  width: 300px;
+  text-align: center;
+  padding: 1rem;
+}
+
+.overlay {
+  position: fixed;
   left: 0;
   top: 0;
   width: 100vw;
   height: 100vh;
-
+  background-color: var(--color-pink);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -149,6 +211,7 @@ const add = () => {
 
 .modal {
   background-color: #fff;
+  padding: 4rem;
 }
 
 .modal-buttons {
